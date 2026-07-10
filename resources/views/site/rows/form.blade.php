@@ -24,19 +24,19 @@
             <input type="hidden" name="captcha_expected" value="{{ encrypt($captchaA + $captchaB) }}">
 
             <div>
-                <input type="text" name="name" value="{{ old('name') }}" placeholder="{{ __('Name') }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                <input type="text" name="name" value="{{ old('name') }}" placeholder="{{ __('Name') }}" class="w-full rounded-lg border-gray-300 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                 @error('name') <p class="text-sm text-red-600 mt-1">{{ $message }}</p> @enderror
             </div>
             <div>
-                <input type="email" name="email" value="{{ old('email') }}" placeholder="{{ __('Email') }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                <input type="email" name="email" value="{{ old('email') }}" placeholder="{{ __('Email') }}" class="w-full rounded-lg border-gray-300 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                 @error('email') <p class="text-sm text-red-600 mt-1">{{ $message }}</p> @enderror
             </div>
             <div>
-                <textarea name="message" rows="5" placeholder="{{ __('Message') }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('message') }}</textarea>
+                <textarea name="message" rows="5" placeholder="{{ __('Message') }}" class="w-full rounded-lg border-gray-300 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('message') }}</textarea>
                 @error('message') <p class="text-sm text-red-600 mt-1">{{ $message }}</p> @enderror
             </div>
             <div>
-                <input type="number" name="captcha_answer" value="{{ old('captcha_answer') }}" placeholder="{{ $captchaA }} + {{ $captchaB }} = ?" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                <input type="number" name="captcha_answer" value="{{ old('captcha_answer') }}" placeholder="{{ $captchaA }} + {{ $captchaB }} = ?" class="w-full rounded-lg border-gray-300 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                 @error('captcha_answer') <p class="text-sm text-red-600 mt-1">{{ $message }}</p> @enderror
             </div>
             <button class="w-full px-6 py-3 bg-brand text-white rounded-lg font-medium hover:opacity-90 transition">{{ __('Send') }}</button>
