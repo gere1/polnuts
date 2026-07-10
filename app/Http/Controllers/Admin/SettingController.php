@@ -42,6 +42,8 @@ class SettingController extends Controller
             'gradient_top_end' => ['nullable', 'string', 'max:20'],
             'gradient_bottom_start' => ['nullable', 'string', 'max:20'],
             'gradient_bottom_end' => ['nullable', 'string', 'max:20'],
+            'background_image' => ['nullable', 'image', 'max:8192'],
+            'remove_background_image' => ['nullable', 'boolean'],
             'font' => ['required', 'in:' . implode(',', array_keys(Setting::FONTS))],
             'default_locale' => ['required', 'in:' . implode(',', array_keys(Setting::LOCALES))],
             'locales' => ['nullable', 'array'],
@@ -61,6 +63,17 @@ class SettingController extends Controller
                 Storage::disk('public')->delete($setting->logo);
             }
             $data['logo'] = $request->file('logo')->store('settings', 'public');
+        }
+
+        if ($request->boolean('remove_background_image') && $setting->background_image) {
+            Storage::disk('public')->delete($setting->background_image);
+            $data['background_image'] = null;
+        }
+        if ($request->hasFile('background_image')) {
+            if ($setting->background_image) {
+                Storage::disk('public')->delete($setting->background_image);
+            }
+            $data['background_image'] = $request->file('background_image')->store('settings', 'public');
         }
 
         if ($request->boolean('remove_favicon') && $setting->favicon) {

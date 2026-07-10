@@ -79,12 +79,15 @@
 </head>
 <body @class(['bg-content' => ! $settings->isGradientBackground()])>
     @if ($settings->isGradientBackground())
+        @if ($settings->background_image)
+            <div style="position:fixed;inset:0;z-index:-2;pointer-events:none;background-image:url('{{ asset('storage/' . $settings->background_image) }}');background-size:cover;background-position:center;"></div>
+        @endif
         <div id="scroll-gradient-bg"
              data-top-start="{{ $settings->gradient_top_start }}"
              data-top-end="{{ $settings->gradient_top_end }}"
              data-bottom-start="{{ $settings->gradient_bottom_start }}"
              data-bottom-end="{{ $settings->gradient_bottom_end }}"
-             style="position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(135deg, {{ $settings->gradient_top_start }}, {{ $settings->gradient_top_end }});"></div>
+             style="position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(135deg, {{ $settings->gradient_top_start }}, {{ $settings->gradient_top_end }});{{ $settings->background_image ? 'opacity:0.65;' : '' }}"></div>
     @endif
 
     @if ($settings->show_top_bar)

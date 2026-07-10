@@ -51,7 +51,7 @@ class Setting extends Model
         'site_name', 'phone', 'email', 'logo', 'show_top_bar', 'logo_height', 'favicon',
         'primary_color', 'text_color', 'header_bg_color', 'footer_bg_color', 'content_bg_color', 'font',
         'top_bar_bg_color', 'top_bar_text_color',
-        'background_mode', 'gradient_top_start', 'gradient_top_end', 'gradient_bottom_start', 'gradient_bottom_end',
+        'background_mode', 'gradient_top_start', 'gradient_top_end', 'gradient_bottom_start', 'gradient_bottom_end', 'background_image',
         'locales', 'default_locale',
     ];
 

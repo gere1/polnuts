@@ -137,6 +137,20 @@
                             <input type="color" id="gradient_bottom_end" name="gradient_bottom_end" value="{{ old('gradient_bottom_end', $setting->gradient_bottom_end) }}" class="mt-1 h-10 w-20 rounded-lg border-slate-300">
                         </div>
                     </div>
+
+                    <div class="pt-2">
+                        <x-input-label for="background_image" value="საერთო ფონის სურათი (არასავალდებულო)" />
+                        @if ($setting->background_image)
+                            <div class="flex items-center gap-2 my-2">
+                                <img src="{{ asset('storage/' . $setting->background_image) }}" class="h-16 w-28 object-cover rounded">
+                                <label class="text-xs text-red-600 flex items-center gap-1">
+                                    <input type="checkbox" name="remove_background_image" value="1"> წაშლა
+                                </label>
+                            </div>
+                        @endif
+                        <input type="file" id="background_image" name="background_image" class="mt-1 block w-full text-sm text-slate-600">
+                        <p class="text-xs text-slate-500 mt-1">სურათი ჩნდება გრადიენტის ქვეშ, გრადიენტი კი გამჭვირვალე ფენად აისახება მასზე.</p>
+                    </div>
                 </div>
 
                 <div x-show="mode === 'solid'" x-cloak>
