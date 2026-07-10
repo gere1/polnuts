@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .text-brand { color: var(--brand-primary); }
+    .bg-brand { background-color: var(--brand-primary); }
+    .border-brand { border-color: var(--brand-primary); }
+    .bg-header { background-color: var(--header-bg); }
+    .bg-footer { background-color: var(--footer-bg); }
+    .bg-content { background-color: var(--content-bg); }
+    .hover\:text-brand:hover { color: var(--brand-primary); }
+    .hover\:bg-brand:hover { background-color: var(--brand-primary); }
+}
+
+@layer components {
+    .admin-card {
+        @apply bg-white rounded-2xl shadow-sm shadow-slate-900/[0.04] ring-1 ring-slate-900/[0.06] transition;
+    }
+    .admin-card-hover {
+        @apply hover:shadow-md hover:shadow-slate-900/[0.06] hover:ring-slate-900/10;
+    }
+    .admin-btn-primary {
+        @apply inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg bg-indigo-600 text-white text-sm font-medium shadow-sm shadow-indigo-600/20 hover:bg-indigo-500 hover:shadow-indigo-600/30 active:bg-indigo-700 transition;
+    }
+    .admin-btn-secondary {
+        @apply inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg bg-white text-slate-700 text-sm font-medium ring-1 ring-slate-200 shadow-sm hover:bg-slate-50 hover:ring-slate-300 transition;
+    }
+    .admin-btn-danger {
+        @apply inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg bg-red-600 text-white text-sm font-medium shadow-sm shadow-red-600/20 hover:bg-red-500 transition;
+    }
+    .admin-input {
+        @apply rounded-lg border-slate-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500;
+    }
+}
+
+[x-cloak] { display: none !important; }

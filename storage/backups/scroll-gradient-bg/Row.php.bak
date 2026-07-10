@@ -1,0 +1,150 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Spatie\Translatable\HasTranslations;
+
+class Row extends Model
+{
+    use HasTranslations;
+
+    const TYPES = ['slider', 'news', 'text', 'products', 'map', 'form'];
+
+    public array $translatable = ['title', 'subtitle', 'body'];
+
+    protected $fillable = ['page_id', 'type', 'position', 'title', 'subtitle', 'body', 'settings'];
+
+    protected $casts = [
+        'settings' => 'array',
+    ];
+
+    public function page()
+    {
+        return $this->belongsTo(Page::class);
+    }
+
+    public function sharedPages()
+    {
+        return $this->belongsToMany(Page::class, 'page_row')->withPivot('position')->withTimestamps();
+    }
+
+    public function items()
+    {
+        return $this->hasMany(RowItem::class)->orderBy('position');
+    }
+
+    public function newsLimit(): int
+    {
+        return (int) ($this->settings['limit'] ?? 3);
+    }
+
+    public function itemLimit(): int
+    {
+        return (int) ($this->settings['limit'] ?? 3);
+    }
+
+    public function layout(): string
+    {
+        return $this->settings['layout'] ?? 'grid';
+    }
+
+    public function cardStyle(): string
+    {
+        return ($this->settings['card_style'] ?? 'bordered') === 'frameless' ? 'frameless' : 'bordered';
+    }
+
+    public function productImageHeight(): int
+    {
+        return (int) ($this->settings['image_height'] ?? 288);
+    }
+
+    public function sliderStyle(): string
+    {
+        return $this->settings['style'] ?? 'center';
+    }
+
+    const SLIDER_HEIGHTS = [
+        'small' => 'h-[35vh] min-h-[280px]',
+        'medium' => 'h-[60vh] min-h-[360px]',
+        'large' => 'h-[80vh] min-h-[480px]',
+        'full' => 'h-screen',
+    ];
+
+    public function sliderHeightClass(): string
+    {
+        $key = $this->settings['height'] ?? 'medium';
+
+        return self::SLIDER_HEIGHTS[$key] ?? self::SLIDER_HEIGHTS['medium'];
+    }
+
+    public function columnCount(): int
+    {
+        return (int) ($this->settings['columns'] ?? 3);
+    }
+
+    const TEXT_HEIGHTS = [
+        'auto' => '',
+        'small' => 'min-h-[35vh]',
+        'medium' => 'min-h-[60vh]',
+        'large' => 'min-h-[80vh]',
+        'full' => 'min-h-screen',
+    ];
+
+    public function textHeightClass(): string
+    {
+        $key = $this->settings['height'] ?? 'auto';
+
+        return self::TEXT_HEIGHTS[$key] ?? '';
+    }
+
+    public function isFluid(): bool
+    {
+        return (bool) ($this->settings['fluid'] ?? false);
+    }
+
+    public function textSide(): string
+    {
+        return ($this->settings['text_side'] ?? 'left') === 'right' ? 'right' : 'left';
+    }
+
+    public function mapLat(): float
+    {
+        return (float) ($this->settings['lat'] ?? 39.4699);
+    }
+
+    public function mapLng(): float
+    {
+        return (float) ($this->settings['lng'] ?? -0.3763);
+    }
+
+    public function mapZoom(): int
+    {
+        return (int) ($this->settings['zoom'] ?? 15);
+    }
+
+    public function styleAttr(): string
+    {
+        $s = $this->settings ?? [];
+        $style = [];
+
+        if (! empty($s['background_color'])) {
+            $style[] = 'background-color:' . $s['background_color'];
+        }
+        if (! empty($s['background_image'])) {
+            $style[] = "background-image:url('" . asset('storage/' . $s['background_image']) . "')";
+            $style[] = 'background-size:cover';
+            $style[] = 'background-position:center';
+        } elseif (! empty($s['background_gradient'])) {
+            $angle = $s['gradient_angle'] ?? 135;
+            $style[] = "background-image:linear-gradient({$angle}deg, " . ($s['background_color'] ?: '#ffffff') . ', ' . $s['background_gradient'] . ')';
+        }
+        if (! empty($s['text_color'])) {
+            $style[] = 'color:' . $s['text_color'];
+        }
+        $style[] = 'padding-top:' . (int) ($s['padding_top'] ?? 0) . 'px';
+        $style[] = 'padding-bottom:' . (int) ($s['padding_bottom'] ?? 0) . 'px';
+
+        return implode(';', $style);
+    }
+}

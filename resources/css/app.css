@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .text-brand { color: var(--brand-primary); }
+    .bg-brand { background-color: var(--brand-primary); }
+    .border-brand { border-color: var(--brand-primary); }
+    .bg-header { background-color: var(--header-bg); }
+    .bg-footer { background-color: var(--footer-bg); }
+    .bg-content { background-color: var(--content-bg); }
+    .bg-top-bar { background-color: var(--top-bar-bg); }
+    .text-top-bar { color: var(--top-bar-text); }
+    .hover\:text-brand:hover { color: var(--brand-primary); }
+    .hover\:bg-brand:hover { background-color: var(--brand-primary); }
+}
+
+@layer components {
+    .admin-card {
+        @apply bg-white rounded-2xl shadow-sm shadow-slate-900/[0.04] ring-1 ring-slate-900/[0.06] transition;
+    }
+    .admin-card-hover {
+        @apply hover:shadow-md hover:shadow-slate-900/[0.06] hover:ring-slate-900/10;
+    }
+    .admin-btn-primary {
+        @apply inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg bg-indigo-600 text-white text-sm font-medium shadow-sm shadow-indigo-600/20 hover:bg-indigo-500 hover:shadow-indigo-600/30 active:bg-indigo-700 transition;
+    }
+    .admin-btn-secondary {
+        @apply inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg bg-white text-slate-700 text-sm font-medium ring-1 ring-slate-200 shadow-sm hover:bg-slate-50 hover:ring-slate-300 transition;
+    }
+    .admin-btn-danger {
+        @apply inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg bg-red-600 text-white text-sm font-medium shadow-sm shadow-red-600/20 hover:bg-red-500 transition;
+    }
+    .admin-input {
+        @apply rounded-lg border-slate-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500;
+    }
+}
+
+[x-cloak] { display: none !important; }
+
+/* Swiper's own stylesheet (loaded after ours, in layouts/site.blade.php) sets `.swiper{padding:0}`
+   — same specificity as a `pb-*` utility placed directly on the .swiper element, and it loads
+   later, so it silently wins the cascade and cancels the utility out. Reserve space for
+   pagination bullets below the slides with this instead, so it can't lose that tie. */
+.swiper.swiper-pb-reserve {
+    padding-bottom: 2.5rem;
+}
+
+/* Row title animations (Row::TEXT_ANIMATIONS / admin "მოძრავი ტექსტი" setting). Elements start
+   in their "armed" state below and get .text-anim-play added by app.js once scrolled into view;
+   without JS the title just renders statically (no [data-text-anim] side effects apply). */
+[data-text-anim="fade-up"] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+[data-text-anim="fade-up"].text-anim-play {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+[data-text-anim="shimmer"] {
+    background-image: linear-gradient(90deg, currentColor 0%, currentColor 40%, rgba(255, 255, 255, 0.9) 50%, currentColor 60%, currentColor 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+[data-text-anim="shimmer"].text-anim-play {
+    animation: text-anim-shimmer 2.5s linear infinite;
+}
+@keyframes text-anim-shimmer {
+    0% { background-position: 200% center; }
+    100% { background-position: -200% center; }
+}
+
+/* No blinking cursor. inline-block + nowrap: these render on an inner <span> (see
+   animated-heading.blade.php), never wrap to a second line, and — for "rotate" — app.js pins
+   this span's width to the longest phrase up front, so the visible box holds still while the
+   text inside it changes; the heading's own box/alignment around it is never touched. */
+[data-text-anim="typewriter"],
+[data-text-anim="rotate"] {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+[data-text-anim="stagger"] .text-anim-char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(0.4em);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+[data-text-anim="stagger"].text-anim-play .text-anim-char {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Hero slider entrance effects (resources/views/site/rows/slider.blade.php, the columns<=1
+   "hero" styles; admin-configurable per row via settings.hero_image_effect/hero_text_effect,
+   see Row::heroImageEffect()/heroTextEffect()). Swiper's fade effect crossfades slides but
+   leaves the image/text static on its own — these layer a slow image effect + a text entrance
+   on top, both gated on .swiper-slide-active so they replay every time a slide becomes active
+   again (Swiper adds/removes this class on each transition, which retriggers a CSS transition
+   the same way scrolling a [data-text-anim] element into view retriggers the rule above).
+   "none" intentionally has no rule here — the element just stays static. */
+.hero-media[data-effect="zoom-out"] {
+    transform: scale(1.08);
+    transition: transform 6.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+.swiper-slide-active .hero-media[data-effect="zoom-out"] {
+    transform: scale(1);
+}
+
+.hero-media[data-effect="zoom-in"] {
+    transform: scale(1);
+    transition: transform 6.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+.swiper-slide-active .hero-media[data-effect="zoom-in"] {
+    transform: scale(1.08);
+}
+
+.hero-media[data-effect="pan-left"] {
+    transform: scale(1.12) translateX(3%);
+    transition: transform 6.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+.swiper-slide-active .hero-media[data-effect="pan-left"] {
+    transform: scale(1.12) translateX(-3%);
+}
+
+.hero-media[data-effect="pan-right"] {
+    transform: scale(1.12) translateX(-3%);
+    transition: transform 6.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+.swiper-slide-active .hero-media[data-effect="pan-right"] {
+    transform: scale(1.12) translateX(3%);
+}
+
+.hero-content[data-effect="fade-up"] {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+}
+.swiper-slide-active .hero-content[data-effect="fade-up"] {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.hero-content[data-effect="fade"] {
+    opacity: 0;
+    transition: opacity 0.9s ease 0.15s;
+}
+.swiper-slide-active .hero-content[data-effect="fade"] {
+    opacity: 1;
+}
+
+.hero-content[data-effect="zoom-in"] {
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+}
+.swiper-slide-active .hero-content[data-effect="zoom-in"] {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.hero-content[data-effect="slide-left"] {
+    opacity: 0;
+    transform: translateX(60px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+}
+.swiper-slide-active .hero-content[data-effect="slide-left"] {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.hero-content[data-effect="slide-right"] {
+    opacity: 0;
+    transform: translateX(-60px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+}
+.swiper-slide-active .hero-content[data-effect="slide-right"] {
+    opacity: 1;
+    transform: translateX(0);
+}

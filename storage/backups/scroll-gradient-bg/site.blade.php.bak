@@ -1,0 +1,166 @@
+@php
+    $settings = \App\Models\Setting::current();
+    $bodyFamily = $settings->fontFamily();
+    $bodyFamilyParam = str_replace(' ', '+', $bodyFamily);
+@endphp
+<!DOCTYPE html>
+<html lang="{{ app()->getLocale() }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ $title ?? $settings->site_name }}</title>
+    @php
+        $metaDescription = $description ?? $settings->site_name;
+        $metaImage = $image ?? ($settings->logo ? asset('storage/' . $settings->logo) : null);
+    @endphp
+    <meta name="description" content="{{ $metaDescription }}">
+    <link rel="canonical" href="{{ url()->current() }}">
+    @if ($settings->favicon)
+        <link rel="icon" href="{{ asset('storage/' . $settings->favicon) }}">
+    @endif
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ $title ?? $settings->site_name }}">
+    <meta property="og:description" content="{{ $metaDescription }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:site_name" content="{{ $settings->site_name }}">
+    @if ($metaImage)
+        <meta property="og:image" content="{{ $metaImage }}">
+    @endif
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $title ?? $settings->site_name }}">
+    <meta name="twitter:description" content="{{ $metaDescription }}">
+    @if ($metaImage)
+        <meta name="twitter:image" content="{{ $metaImage }}">
+    @endif
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&family={{ $bodyFamilyParam }}:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+    <style>
+        :root {
+            --brand-primary: {{ $settings->primary_color }};
+            --brand-text: {{ $settings->text_color }};
+            --header-bg: {{ $settings->header_bg_color }};
+            --footer-bg: {{ $settings->footer_bg_color }};
+            --content-bg: {{ $settings->content_bg_color }};
+        }
+        body { font-family: '{{ $bodyFamily }}', sans-serif; color: var(--brand-text); }
+        .font-display { font-family: 'Playfair Display', serif; }
+    </style>
+</head>
+<body class="bg-content">
+
+    @if ($settings->show_top_bar)
+        <div class="bg-gray-800 text-gray-200 text-sm">
+            <div class="max-w-7xl mx-auto px-4 py-2 flex justify-end gap-6">
+                @if ($settings->phone)
+                    <a href="tel:{{ $settings->phone }}" class="hover:text-white">{{ $settings->phone }}</a>
+                @endif
+                @if ($settings->email)
+                    <a href="mailto:{{ $settings->email }}" class="hover:text-white">{{ $settings->email }}</a>
+                @endif
+            </div>
+        </div>
+    @endif
+
+    @php
+        $currentRouteName = \Illuminate\Support\Facades\Route::currentRouteName();
+        $localeBaseRoute = $currentRouteName && str_starts_with($currentRouteName, 'loc.') ? substr($currentRouteName, 4) : $currentRouteName;
+        $localeRouteParams = collect(request()->route()?->parameters() ?? [])->except('locale')->all();
+        $locales = collect(['ka' => 'KA', 'en' => 'EN', 'de' => 'DE'])
+            ->filter(fn ($label, $code) => $settings->isLocaleEnabled($code));
+    @endphp
+
+    <header class="bg-header border-b" x-data="{ mobileMenuOpen: false }">
+        <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
+            <a href="{{ localizedRoute('home') }}" class="text-xl font-semibold tracking-wide flex items-center gap-2">
+                @if ($settings->logo)
+                    <img src="{{ asset('storage/' . $settings->logo) }}" alt="{{ $settings->site_name }}" style="height: {{ $settings->logo_height }}px" class="object-contain">
+                @else
+                    {{ $settings->site_name }}
+                @endif
+            </a>
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+                @foreach (\App\Models\MenuItem::orderBy('position')->get() as $menuItem)
+                    <a href="{{ $menuItem->href() }}"
+                       @if ($menuItem->opensInNewTab()) target="_blank" rel="noopener" @endif
+                       class="hover:text-brand {{ url()->current() === $menuItem->href() ? 'text-brand' : '' }}">
+                        {{ $menuItem->label }}
+                    </a>
+                @endforeach
+            </nav>
+
+            <div class="hidden md:flex items-center gap-1 text-xs font-semibold shrink-0 ml-4">
+                @if ($localeBaseRoute && $locales->count() > 1)
+                    @foreach ($locales as $code => $label)
+                        <a href="{{ localizedRoute($localeBaseRoute, $localeRouteParams, $code) }}"
+                           class="px-2 py-1 rounded transition {{ app()->getLocale() === $code ? 'bg-brand text-white' : 'opacity-60 hover:opacity-100' }}">
+                            {{ $label }}
+                        </a>
+                    @endforeach
+                @endif
+            </div>
+
+            <button
+                type="button"
+                @click="mobileMenuOpen = !mobileMenuOpen"
+                :aria-expanded="mobileMenuOpen"
+                aria-label="{{ __('მენიუს გახსნა') }}"
+                class="md:hidden inline-flex items-center justify-center p-2 -mr-2 rounded-md hover:text-brand focus:outline-none"
+            >
+                <svg x-show="!mobileMenuOpen" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+                <svg x-show="mobileMenuOpen" x-cloak class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <nav
+            x-show="mobileMenuOpen"
+            x-cloak
+            x-transition
+            @click.outside="mobileMenuOpen = false"
+            class="md:hidden border-t bg-header px-4 py-3 space-y-1 text-sm font-medium"
+        >
+            @foreach (\App\Models\MenuItem::orderBy('position')->get() as $menuItem)
+                <a href="{{ $menuItem->href() }}"
+                   @if ($menuItem->opensInNewTab()) target="_blank" rel="noopener" @endif
+                   @click="mobileMenuOpen = false"
+                   class="block py-2.5 hover:text-brand {{ url()->current() === $menuItem->href() ? 'text-brand' : '' }}">
+                    {{ $menuItem->label }}
+                </a>
+            @endforeach
+
+            @if ($localeBaseRoute && $locales->count() > 1)
+                <div class="flex items-center gap-1 pt-2 mt-2 border-t text-xs font-semibold">
+                    @foreach ($locales as $code => $label)
+                        <a href="{{ localizedRoute($localeBaseRoute, $localeRouteParams, $code) }}"
+                           class="px-2 py-1 rounded transition {{ app()->getLocale() === $code ? 'bg-brand text-white' : 'opacity-60 hover:opacity-100' }}">
+                            {{ $label }}
+                        </a>
+                    @endforeach
+                </div>
+            @endif
+        </nav>
+    </header>
+
+    <main>
+        {{ $slot }}
+    </main>
+
+    <footer class="bg-footer text-gray-400">
+        <div class="max-w-7xl mx-auto px-4 py-6 text-sm text-center">
+            &copy; {{ now()->year > 2022 ? '2022–' . now()->year : '2022' }} {{ $settings->site_name }}. {{ __('All rights reserved.') }}
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    @stack('scripts')
+</body>
+</html>
