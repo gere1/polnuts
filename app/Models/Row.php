@@ -49,9 +49,13 @@ class Row extends Model
         return $this->settings['layout'] ?? 'grid';
     }
 
+    const CARD_STYLES = ['bordered', 'frameless', 'flip'];
+
     public function cardStyle(): string
     {
-        return ($this->settings['card_style'] ?? 'bordered') === 'frameless' ? 'frameless' : 'bordered';
+        $value = $this->settings['card_style'] ?? 'bordered';
+
+        return in_array($value, self::CARD_STYLES, true) ? $value : 'bordered';
     }
 
     public function productImageHeight(): int

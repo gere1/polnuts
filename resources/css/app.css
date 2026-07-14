@@ -182,3 +182,50 @@
     opacity: 1;
     transform: translateX(0);
 }
+
+/* Product card flip (Row::cardStyle() === 'flip', resources/views/site/rows/products.blade.php,
+   grid layout only). Hover rotates .product-flip-card-inner 180deg around the Y axis; the two
+   faces are absolutely stacked on top of each other and backface-visibility hides whichever one
+   is facing away, so only the front (image + title) or back (excerpt/price) is ever visible. */
+.product-flip-card {
+    perspective: 1200px;
+}
+.product-flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+    transform-style: preserve-3d;
+}
+.product-flip-card:hover .product-flip-card-inner {
+    transform: rotateY(180deg);
+}
+.product-flip-card-front,
+.product-flip-card-back {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+.product-flip-card-front {
+    display: flex;
+    flex-direction: column;
+    background: #f9fafb;
+}
+.product-flip-card-title-bar {
+    margin-top: auto;
+    padding: 0.75rem 1rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0));
+}
+.product-flip-card-back {
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1.25rem;
+    background: #fff;
+    text-align: center;
+}

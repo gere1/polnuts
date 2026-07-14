@@ -163,7 +163,7 @@
                 <div>
                     <x-input-label for="card_style" value="ბარათის სტილი (ბადის რეჟიმისთვის)" />
                     <select id="card_style" name="card_style" class="mt-1 block w-full max-w-xs {{ $inputCls }}">
-                        @foreach (['bordered' => 'ჩარჩოიანი ბარათი (ნაგულისხმევი)', 'frameless' => 'უჩარჩო — მომრგვალებული სურათი, ფონის გარეშე'] as $val => $label)
+                        @foreach (['bordered' => 'ჩარჩოიანი ბარათი (ნაგულისხმევი)', 'frameless' => 'უჩარჩო — მომრგვალებული სურათი, ფონის გარეშე', 'flip' => 'შემობრუნებადი — hover-ზე ბრუნდება და უკანა მხარეს აღწერას აჩვენებს'] as $val => $label)
                             <option value="{{ $val }}" @selected(old('card_style', $row->cardStyle()) === $val)>{{ $label }}</option>
                         @endforeach
                     </select>

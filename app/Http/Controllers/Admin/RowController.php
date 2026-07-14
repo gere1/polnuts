@@ -92,7 +92,7 @@ class RowController extends Controller
             'product_ids' => ['nullable', 'array'],
             'product_ids.*' => ['integer', 'exists:products,id'],
             'layout' => ['nullable', 'in:grid,list,carousel'],
-            'card_style' => ['nullable', 'in:bordered,frameless'],
+            'card_style' => ['nullable', 'in:bordered,frameless,flip'],
             'image_height' => ['nullable', 'integer', 'min:100', 'max:600'],
             'show_all_link' => ['nullable', 'boolean'],
             'style' => ['nullable', 'in:center,left,right,minimal,split,left-middle,right-middle'],

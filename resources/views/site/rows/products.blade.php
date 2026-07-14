@@ -92,6 +92,33 @@
                     });
                 </script>
                 @endpush
+            @elseif ($row->cardStyle() === 'flip')
+                <div class="grid grid-cols-1 sm:grid-cols-2 {{ $gridCols }} gap-6 mt-6">
+                    @foreach ($products as $product)
+                        @php $summary = productSummary($product, 200); @endphp
+                        <a href="{{ localizedRoute('products.show', $product) }}" class="product-flip-card block" style="height: {{ $row->productImageHeight() + 96 }}px">
+                            <div class="product-flip-card-inner">
+                                <div class="product-flip-card-front">
+                                    @if ($product->image)
+                                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
+                                    @endif
+                                    <div class="product-flip-card-title-bar">
+                                        <h3 class="font-semibold text-lg text-white">{{ $product->name }}</h3>
+                                    </div>
+                                </div>
+                                <div class="product-flip-card-back">
+                                    <h3 class="font-semibold text-lg mb-2 text-gray-900">{{ $product->name }}</h3>
+                                    @if ($summary)
+                                        <p class="text-sm text-gray-600">{!! nl2br(e($summary)) !!}</p>
+                                    @endif
+                                    @if (! is_null($product->price))
+                                        <div class="text-indigo-600 font-semibold mt-2">{{ number_format((float) $product->price, 2) }} ₾</div>
+                                    @endif
+                                </div>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
             @elseif ($row->cardStyle() === 'frameless')
                 <div class="grid grid-cols-1 sm:grid-cols-2 {{ $gridCols }} gap-6 mt-6">
                     @foreach ($products as $product)
