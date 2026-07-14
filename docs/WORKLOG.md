@@ -4,6 +4,21 @@
 
 ---
 
+## 2026-07-15 — პირველი production deploy (brnuts.de)
+
+პროექტი პირველად აიტვირთა production-ზე, ახალ დომენზე `brnuts.de` (cPanel ანგარიში `brnutsde`, ჰოსტინგი proservice.ge — იგივე პროვაიდერი, სადაც ძველი `royalnuts.com.ge` წევს, მაგრამ სულ ახალი/ცალკე cPanel ანგარიშით, არა იმავე დირექტორიაში). დეტალური სერვერის სტრუქტურა და გამეორებადი პროცედურა შენახულია პროექტის მეხსიერებაში (`deploy-brnuts-server` memory).
+
+მოკლედ რა გაკეთდა:
+- 3 commit (flip ბარათი, sticky header, WORKLOG პროცესი) push-ილია `origin/main`-ზე (`github.com/gere1/brnuts`, ყოფილი `gere1/royalnuts`, უბრალოდ გადარქმეული).
+- სერვერზე (`~/app`) კოდი დაკლონირდა GitHub-იდან ახალი deploy key-ით (read-only), `~/public_html` დაუკავშირდა `~/app/public`-ს (symlink `build`/`storage`-ზე, ხელით მორგებული `index.php`, შერწყმული `.htaccess` — cPanel-ის PHP handler + Laravel-ის rewrite წესები ერთად).
+- ლოკალური `brnuts` ბაზის dump საწყისად ხელით აიტვირთა phpMyAdmin-ით (`mysqldump`-ით გენერირებული, `Desktop\brnuts.sql`), ასევე `storage/app/public`-ის media ფაილები (zip → cPanel File Manager → extract).
+- გამოსწორდა 2 პრობლემა, რომლებმაც საიტი 500-ზე აყენებდა: ცარიელი `APP_KEY` (`.env`-ში default-ად დარჩენილი, `key:generate` + `config:cache` ხელახლა) და დაკომენტარებული `DB_*` ხაზები `.env`-ში (`sed`-ით მოშორდა `#`).
+- საკონტაქტო ფორმის მეილი არ მოდიოდა, რადგან `.env.example`-ის default `MAIL_MAILER=log` იყო დარჩენილი (მეილი მხოლოდ log ფაილში იწერებოდა, არ იგზავნებოდა) — გამოსწორდა `MAIL_MAILER=sendmail`-ზე გადართვით, დადასტურდა რეალური ტესტ-შეტყობინებით.
+
+**შეცვლილი ფაილები (სერვერზე, არა repo-ში):** `~/app/.env`, `~/public_html/index.php`, `~/public_html/.htaccess`, `~/public_html/build` და `~/public_html/storage` (symlink-ები).
+
+---
+
 ## 2026-07-14 — WORKLOG პროცესის დამატება
 
 CLAUDE.md-ში დაემატა მუდმივი წესი, რომ ყოველი მნიშვნელოვანი ცვლილების შემდეგ ეს ფაილი უნდა განახლდეს. ამავე დროს შეიქმნა თავად ეს ფაილი და უკან ჩაიწერა სესიის მანძილზე აქამდე გაკეთებული სამუშაო.
