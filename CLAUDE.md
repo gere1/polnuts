@@ -20,6 +20,10 @@ php artisan migrate            # run pending migrations against the configured D
 
 There is no git repository initialized in this checkout (working tree only). Don't assume `git log`/`git blame` are available for history.
 
+## Work log
+
+After every significant change (new feature, behavior change, non-trivial fix — not typo fixes or pure formatting), append an entry to `docs/WORKLOG.md` with: the date, a short description of what was done, and which files changed. Newest entry on top. Do this as part of the same turn as the change, not as a separate follow-up task.
+
 ## Local environment gotcha: MySQL instant ADD COLUMN
 
 The local DB is MySQL (8.4.x via Laragon), **not** the sqlite used by tests. When a migration adds **multiple** columns with different `->default(...)` values to a table that already has rows, put each column in its **own** `Schema::table()` call rather than batching them in one closure — MySQL's instant ADD COLUMN has a bug class that can silently write the wrong default into existing rows when several columns are batched in one ALTER. After running such a migration, spot-check the existing row(s), don't just trust `DESCRIBE`.
