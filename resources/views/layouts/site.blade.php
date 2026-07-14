@@ -122,7 +122,7 @@
             ->filter(fn ($label, $code) => $settings->isLocaleEnabled($code));
     @endphp
 
-    <header class="bg-header border-b" x-data="{ mobileMenuOpen: false }">
+    <header class="bg-header border-b sticky top-0 z-30" x-data="{ mobileMenuOpen: false }">
         <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
             <a href="{{ localizedRoute('home') }}" class="text-xl font-semibold tracking-wide flex items-center gap-2">
                 @if ($settings->logo)
