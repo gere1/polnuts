@@ -1,6 +1,7 @@
 ---
 deployment:
   tasks:
+    - git -C /home/polnutsp/app_live2 pull origin main
     - test -f /home/polnutsp/app_live2/composer.phar || (curl -fsSL https://getcomposer.org/installer -o /home/polnutsp/app_live2/composer-setup.php && /opt/cpanel/ea-php83/root/usr/bin/php -d allow_url_fopen=On /home/polnutsp/app_live2/composer-setup.php --quiet --install-dir=/home/polnutsp/app_live2 && rm -f /home/polnutsp/app_live2/composer-setup.php)
     - cd /home/polnutsp/app_live2 && /opt/cpanel/ea-php83/root/usr/bin/php -d allow_url_fopen=On composer.phar install --no-dev --optimize-autoloader --no-interaction
     - test -f /home/polnutsp/.db_imported || (mysql polnutsp_site < /home/polnutsp/polnuts_dump.sql && touch /home/polnutsp/.db_imported)
