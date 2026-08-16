@@ -9,6 +9,8 @@
         <x-slot:ka><x-text-input name="name[ka]" class="mt-1 block w-full" value="{{ old('name.ka', $product?->getTranslation('name', 'ka', false)) }}" :required="$defaultLocale === 'ka'" autofocus /></x-slot:ka>
         <x-slot:en><x-text-input name="name[en]" class="mt-1 block w-full" value="{{ old('name.en', $product?->getTranslation('name', 'en', false)) }}" :required="$defaultLocale === 'en'" /></x-slot:en>
         <x-slot:de><x-text-input name="name[de]" class="mt-1 block w-full" value="{{ old('name.de', $product?->getTranslation('name', 'de', false)) }}" :required="$defaultLocale === 'de'" /></x-slot:de>
+        <x-slot:pl><x-text-input name="name[pl]" class="mt-1 block w-full" value="{{ old('name.pl', $product?->getTranslation('name', 'pl', false)) }}" :required="$defaultLocale === 'pl'" /></x-slot:pl>
+        <x-slot:es><x-text-input name="name[es]" class="mt-1 block w-full" value="{{ old('name.es', $product?->getTranslation('name', 'es', false)) }}" :required="$defaultLocale === 'es'" /></x-slot:es>
     </x-i18n-tabs>
     <x-input-error :messages="$errors->get('name.'.$defaultLocale)" class="mt-2" />
 </div>
@@ -36,6 +38,8 @@
         <x-slot:ka><textarea name="excerpt[ka]" rows="2" class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('excerpt.ka', $product?->getTranslation('excerpt', 'ka', false)) }}</textarea></x-slot:ka>
         <x-slot:en><textarea name="excerpt[en]" rows="2" class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('excerpt.en', $product?->getTranslation('excerpt', 'en', false)) }}</textarea></x-slot:en>
         <x-slot:de><textarea name="excerpt[de]" rows="2" class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('excerpt.de', $product?->getTranslation('excerpt', 'de', false)) }}</textarea></x-slot:de>
+        <x-slot:pl><textarea name="excerpt[pl]" rows="2" class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('excerpt.pl', $product?->getTranslation('excerpt', 'pl', false)) }}</textarea></x-slot:pl>
+        <x-slot:es><textarea name="excerpt[es]" rows="2" class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('excerpt.es', $product?->getTranslation('excerpt', 'es', false)) }}</textarea></x-slot:es>
     </x-i18n-tabs>
 </div>
 
@@ -45,6 +49,8 @@
         <x-slot:ka><x-rich-editor name="body[ka]" :value="old('body.ka', $product?->getTranslation('body', 'ka', false))" /></x-slot:ka>
         <x-slot:en><x-rich-editor name="body[en]" :value="old('body.en', $product?->getTranslation('body', 'en', false))" /></x-slot:en>
         <x-slot:de><x-rich-editor name="body[de]" :value="old('body.de', $product?->getTranslation('body', 'de', false))" /></x-slot:de>
+        <x-slot:pl><x-rich-editor name="body[pl]" :value="old('body.pl', $product?->getTranslation('body', 'pl', false))" /></x-slot:pl>
+        <x-slot:es><x-rich-editor name="body[es]" :value="old('body.es', $product?->getTranslation('body', 'es', false))" /></x-slot:es>
     </x-i18n-tabs>
 </div>
 

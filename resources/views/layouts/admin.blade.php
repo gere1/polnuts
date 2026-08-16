@@ -19,6 +19,33 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
 
+    {{--
+        Quill (used by <x-rich-editor>, resources/views/components/rich-editor.blade.php) is loaded
+        here rather than via that component's own @once block: @once does not dedupe correctly when
+        the component is rendered inside another component's named slots (e.g. <x-i18n-tabs>'s
+        <x-slot:ka>/<x-slot:en>/...) — each slot's own output-buffer capture causes the block to be
+        skipped entirely, so the library never loads. Always loading it here for every admin page
+        sidesteps that Blade limitation.
+    --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?{{ \App\Models\Setting::richTextFontsQuery() }}&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+    <style>
+        .ql-toolbar.ql-snow { border-radius: 0.5rem 0.5rem 0 0; border-color: #cbd5e1; }
+        .ql-container.ql-snow { border-radius: 0 0 0.5rem 0.5rem; border-color: #cbd5e1; font-size: 0.9rem; }
+        .ql-editor { background-color: #94a3b8; }
+        @foreach (\App\Models\Setting::RICH_TEXT_FONTS as $slug => $font)
+            .ql-font-{{ $slug }} { font-family: '{{ $font['label'] }}', sans-serif; }
+            .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="{{ $slug }}"]::before,
+            .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="{{ $slug }}"]::before {
+                content: '{{ $font['label'] }}';
+                font-family: '{{ $font['label'] }}', sans-serif;
+            }
+        @endforeach
+        .ql-snow .ql-picker.ql-font { width: 170px; }
+    </style>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>[x-cloak] { display: none !important; }</style>
 </head>

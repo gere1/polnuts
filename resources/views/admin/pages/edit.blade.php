@@ -14,6 +14,8 @@
                     <x-slot:ka><x-text-input name="title[ka]" class="mt-1 block w-full" value="{{ old('title.ka', $page->getTranslation('title', 'ka', false)) }}" :required="$defaultLocale === 'ka'" autofocus /></x-slot:ka>
                     <x-slot:en><x-text-input name="title[en]" class="mt-1 block w-full" value="{{ old('title.en', $page->getTranslation('title', 'en', false)) }}" :required="$defaultLocale === 'en'" /></x-slot:en>
                     <x-slot:de><x-text-input name="title[de]" class="mt-1 block w-full" value="{{ old('title.de', $page->getTranslation('title', 'de', false)) }}" :required="$defaultLocale === 'de'" /></x-slot:de>
+                    <x-slot:pl><x-text-input name="title[pl]" class="mt-1 block w-full" value="{{ old('title.pl', $page->getTranslation('title', 'pl', false)) }}" :required="$defaultLocale === 'pl'" /></x-slot:pl>
+                    <x-slot:es><x-text-input name="title[es]" class="mt-1 block w-full" value="{{ old('title.es', $page->getTranslation('title', 'es', false)) }}" :required="$defaultLocale === 'es'" /></x-slot:es>
                 </x-i18n-tabs>
                 <x-input-error :messages="$errors->get('title.'.$defaultLocale)" class="mt-2" />
             </div>
@@ -28,6 +30,8 @@
                     <x-slot:ka><textarea name="meta_description[ka]" rows="3" maxlength="500" class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">{{ old('meta_description.ka', $page->getTranslation('meta_description', 'ka', false)) }}</textarea></x-slot:ka>
                     <x-slot:en><textarea name="meta_description[en]" rows="3" maxlength="500" class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">{{ old('meta_description.en', $page->getTranslation('meta_description', 'en', false)) }}</textarea></x-slot:en>
                     <x-slot:de><textarea name="meta_description[de]" rows="3" maxlength="500" class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">{{ old('meta_description.de', $page->getTranslation('meta_description', 'de', false)) }}</textarea></x-slot:de>
+                    <x-slot:pl><textarea name="meta_description[pl]" rows="3" maxlength="500" class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">{{ old('meta_description.pl', $page->getTranslation('meta_description', 'pl', false)) }}</textarea></x-slot:pl>
+                    <x-slot:es><textarea name="meta_description[es]" rows="3" maxlength="500" class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">{{ old('meta_description.es', $page->getTranslation('meta_description', 'es', false)) }}</textarea></x-slot:es>
                 </x-i18n-tabs>
                 <x-input-error :messages="$errors->get('meta_description.'.$defaultLocale)" class="mt-2" />
             </div>

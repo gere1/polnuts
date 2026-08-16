@@ -12,22 +12,18 @@ class RowItemController extends Controller
 {
     public function store(Request $request, Row $row)
     {
-        $data = $request->validate([
-            'title.ka' => ['nullable', 'string', 'max:255'],
-            'title.en' => ['nullable', 'string', 'max:255'],
-            'title.de' => ['nullable', 'string', 'max:255'],
-            'subtitle.ka' => ['nullable', 'string', 'max:1000'],
-            'subtitle.en' => ['nullable', 'string', 'max:1000'],
-            'subtitle.de' => ['nullable', 'string', 'max:1000'],
-            'body.ka' => ['nullable', 'string'],
-            'body.en' => ['nullable', 'string'],
-            'body.de' => ['nullable', 'string'],
-            'link' => ['nullable', 'string', 'max:255'],
-            'image' => ['nullable', 'image', 'max:8192'],
-            'image_height' => ['nullable', 'integer', 'min:20', 'max:800'],
-            'align' => ['nullable', 'in:left,center,right'],
-            'width' => ['nullable', 'integer', 'min:10', 'max:100'],
-        ]);
+        $data = $request->validate(array_merge(
+            translatableRules('title', ['string', 'max:255']),
+            translatableRules('subtitle', ['string', 'max:1000']),
+            translatableRules('body', ['string']),
+            [
+                'link' => ['nullable', 'string', 'max:255'],
+                'image' => ['nullable', 'image', 'max:8192'],
+                'image_height' => ['nullable', 'integer', 'min:20', 'max:800'],
+                'align' => ['nullable', 'in:left,center,right'],
+                'width' => ['nullable', 'integer', 'min:10', 'max:100'],
+            ]
+        ));
 
         $position = (int) $row->items()->max('position') + 1;
 
@@ -48,22 +44,18 @@ class RowItemController extends Controller
 
     public function update(Request $request, RowItem $rowItem)
     {
-        $data = $request->validate([
-            'title.ka' => ['nullable', 'string', 'max:255'],
-            'title.en' => ['nullable', 'string', 'max:255'],
-            'title.de' => ['nullable', 'string', 'max:255'],
-            'subtitle.ka' => ['nullable', 'string', 'max:1000'],
-            'subtitle.en' => ['nullable', 'string', 'max:1000'],
-            'subtitle.de' => ['nullable', 'string', 'max:1000'],
-            'body.ka' => ['nullable', 'string'],
-            'body.en' => ['nullable', 'string'],
-            'body.de' => ['nullable', 'string'],
-            'link' => ['nullable', 'string', 'max:255'],
-            'image' => ['nullable', 'image', 'max:8192'],
-            'image_height' => ['nullable', 'integer', 'min:20', 'max:800'],
-            'align' => ['nullable', 'in:left,center,right'],
-            'width' => ['nullable', 'integer', 'min:10', 'max:100'],
-        ]);
+        $data = $request->validate(array_merge(
+            translatableRules('title', ['string', 'max:255']),
+            translatableRules('subtitle', ['string', 'max:1000']),
+            translatableRules('body', ['string']),
+            [
+                'link' => ['nullable', 'string', 'max:255'],
+                'image' => ['nullable', 'image', 'max:8192'],
+                'image_height' => ['nullable', 'integer', 'min:20', 'max:800'],
+                'align' => ['nullable', 'in:left,center,right'],
+                'width' => ['nullable', 'integer', 'min:10', 'max:100'],
+            ]
+        ));
 
         if ($request->hasFile('image')) {
             if ($rowItem->image) {

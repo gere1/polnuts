@@ -3,7 +3,7 @@
     $captchaA = random_int(1, 9);
     $captchaB = random_int(1, 9);
 @endphp
-<section class="{{ $bare ? '' : 'px-4' }}" style="{{ $bare ? '' : $row->styleAttr() }}">
+<section class="{{ $bare ? '' : 'px-4' }}" style="{{ $bare ? (($groupTextColor ?? null) ? 'color:'.$groupTextColor : $row->textColorStyle()) : $row->styleAttr() }}">
     <div class="{{ $bare ? '' : 'max-w-xl mx-auto' }}">
         <x-animated-heading :row="$row" class="font-display italic text-3xl md:text-4xl text-center mb-2" />
         @if ($row->subtitle)

@@ -5,7 +5,7 @@
     $alignCls = ['left' => 'mr-auto', 'center' => 'mx-auto', 'right' => 'ml-auto'];
 @endphp
 @if ($row->items->count())
-    <section class="{{ $bare ? '' : 'px-4' }}" style="{{ $bare ? '' : $row->styleAttr() }}">
+    <section class="{{ $bare ? '' : 'px-4' }}" style="{{ $bare ? (($groupTextColor ?? null) ? 'color:'.$groupTextColor : $row->textColorStyle()) : $row->styleAttr() }}">
         <div class="max-w-7xl mx-auto">
             <x-animated-heading :row="$row" class="font-display italic text-3xl md:text-4xl text-center mb-2" />
             @if ($row->subtitle)

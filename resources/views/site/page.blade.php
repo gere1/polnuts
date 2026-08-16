@@ -9,12 +9,15 @@
             $groupSize = min($row->groupSize(), $rowCount - $i);
         @endphp
         @if ($groupSize > 1)
-            @php $shared = $row->hasSharedGroupBackground(); @endphp
+            @php
+                $shared = $row->hasSharedGroupBackground();
+                $groupTextColor = $shared ? $row->groupTextColor() : null;
+            @endphp
             <section class="{{ $shared ? 'px-4' : '' }}" style="{{ $shared ? $row->groupBackgroundStyle() : '' }}">
                 <div class="max-w-7xl mx-auto {{ $shared ? '' : 'px-4' }} grid grid-cols-1 {{ $groupColsClass[(string) $groupSize] ?? 'md:grid-cols-2' }} gap-8 items-stretch">
                     @for ($j = 0; $j < $groupSize; $j++)
                         @php $member = $rows[$i + $j]; @endphp
-                        <div>@include('site.rows.' . $member->type, ['row' => $member, 'bare' => $shared])</div>
+                        <div>@include('site.rows.' . $member->type, ['row' => $member, 'bare' => $shared, 'groupTextColor' => $groupTextColor])</div>
                     @endfor
                 </div>
             </section>

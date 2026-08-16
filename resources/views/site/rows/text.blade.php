@@ -5,7 +5,7 @@
     $bare = $bare ?? false;
 @endphp
 @if ($columns <= 1)
-    <section class="{{ $bare ? '' : 'px-4' }} {{ $bare ? 'h-full flex flex-col justify-center' : '' }}" style="{{ $bare ? '' : $row->styleAttr() }}">
+    <section class="{{ $bare ? '' : 'px-4' }} {{ $bare ? 'h-full flex flex-col justify-center' : '' }}" style="{{ $bare ? (($groupTextColor ?? null) ? 'color:'.$groupTextColor : $row->textColorStyle()) : $row->styleAttr() }}">
         <div class="{{ $bare ? '' : 'max-w-5xl mx-auto' }} text-{{ $align }}">
             <x-animated-heading :row="$row" class="font-display italic text-3xl md:text-4xl mb-4" />
             @if ($row->subtitle)
@@ -17,7 +17,7 @@
         </div>
     </section>
 @elseif ($row->items->count())
-    <section class="{{ $row->isFluid() ? '' : 'px-4' }} {{ $row->textHeightClass() }} flex flex-col justify-center" style="{{ $row->styleAttr() }}">
+    <section class="{{ ($bare || $row->isFluid()) ? '' : 'px-4' }} {{ $row->textHeightClass() }} flex flex-col justify-center" style="{{ $bare ? (($groupTextColor ?? null) ? 'color:'.$groupTextColor : $row->textColorStyle()) : $row->styleAttr() }}">
         <div class="{{ $row->isFluid() ? 'w-full' : 'max-w-7xl mx-auto w-full' }}">
             <x-animated-heading :row="$row" class="font-display italic text-3xl md:text-4xl text-center mb-2 {{ $row->isFluid() ? 'px-4' : '' }}" />
             @if ($row->subtitle)

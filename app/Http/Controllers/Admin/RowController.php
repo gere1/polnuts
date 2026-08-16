@@ -56,19 +56,15 @@ class RowController extends Controller
 
     public function update(Request $request, Row $row)
     {
-        $data = $request->validate([
-            'title.ka' => ['nullable', 'string', 'max:255'],
-            'title.en' => ['nullable', 'string', 'max:255'],
-            'title.de' => ['nullable', 'string', 'max:255'],
-            'subtitle.ka' => ['nullable', 'string', 'max:255'],
-            'subtitle.en' => ['nullable', 'string', 'max:255'],
-            'subtitle.de' => ['nullable', 'string', 'max:255'],
-            'body.ka' => ['nullable', 'string'],
-            'body.en' => ['nullable', 'string'],
-            'body.de' => ['nullable', 'string'],
+        $data = $request->validate(array_merge(
+            translatableRules('title', ['string', 'max:255']),
+            translatableRules('subtitle', ['string', 'max:255']),
+            translatableRules('body', ['string']),
+            [
             'group_size' => ['nullable', 'integer', 'in:1,2,3,4'],
             'group_shared_background' => ['nullable', 'boolean'],
             'group_background_color' => ['nullable', 'string', 'max:20'],
+            'group_text_color' => ['nullable', 'string', 'max:20'],
             'group_background_gradient' => ['nullable', 'string', 'max:20'],
             'group_use_gradient' => ['nullable', 'boolean'],
             'group_gradient_angle' => ['nullable', 'integer', 'min:0', 'max:360'],
@@ -107,12 +103,14 @@ class RowController extends Controller
             'text_animation' => ['nullable', 'in:' . implode(',', Row::TEXT_ANIMATIONS)],
             'hero_image_effect' => ['nullable', 'in:' . implode(',', Row::HERO_IMAGE_EFFECTS)],
             'hero_text_effect' => ['nullable', 'in:' . implode(',', Row::HERO_TEXT_EFFECTS)],
-        ]);
+            ]
+        ));
 
         $settings = $row->settings ?? [];
         $settings['group_size'] = (int) ($data['group_size'] ?? 1);
         $settings['group_shared_background'] = $request->boolean('group_shared_background');
         $settings['group_background_color'] = $data['group_background_color'] ?? null;
+        $settings['group_text_color'] = $data['group_text_color'] ?? null;
         $settings['group_background_gradient'] = $request->boolean('group_use_gradient') ? ($data['group_background_gradient'] ?? null) : null;
         $settings['group_gradient_angle'] = $data['group_gradient_angle'] ?? 135;
         $settings['group_padding_top'] = $data['group_padding_top'] ?? 48;

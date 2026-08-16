@@ -1,5 +1,5 @@
 @php $bare = $bare ?? false; @endphp
-<section class="{{ $bare ? '' : 'px-4' }}" style="{{ $bare ? '' : $row->styleAttr() }}">
+<section class="{{ $bare ? '' : 'px-4' }}" style="{{ $bare ? (($groupTextColor ?? null) ? 'color:'.$groupTextColor : $row->textColorStyle()) : $row->styleAttr() }}">
     <div class="{{ $bare ? '' : 'max-w-7xl mx-auto' }}">
         <x-animated-heading :row="$row" class="font-display italic text-3xl md:text-4xl text-center mb-2" />
         @if ($row->subtitle)

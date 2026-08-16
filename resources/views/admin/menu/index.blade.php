@@ -37,6 +37,8 @@
                             <x-slot:ka><input type="text" name="label[ka]" value="{{ $item->getTranslation('label', 'ka', false) }}" placeholder="სახელი" @required($defaultLocale === 'ka') class="rounded-lg border-slate-300 text-sm w-full focus:border-indigo-500 focus:ring-indigo-500"></x-slot:ka>
                             <x-slot:en><input type="text" name="label[en]" value="{{ $item->getTranslation('label', 'en', false) }}" placeholder="Label" @required($defaultLocale === 'en') class="rounded-lg border-slate-300 text-sm w-full focus:border-indigo-500 focus:ring-indigo-500"></x-slot:en>
                             <x-slot:de><input type="text" name="label[de]" value="{{ $item->getTranslation('label', 'de', false) }}" placeholder="Titel" @required($defaultLocale === 'de') class="rounded-lg border-slate-300 text-sm w-full focus:border-indigo-500 focus:ring-indigo-500"></x-slot:de>
+                            <x-slot:pl><input type="text" name="label[pl]" value="{{ $item->getTranslation('label', 'pl', false) }}" placeholder="Tytuł" @required($defaultLocale === 'pl') class="rounded-lg border-slate-300 text-sm w-full focus:border-indigo-500 focus:ring-indigo-500"></x-slot:pl>
+                            <x-slot:es><input type="text" name="label[es]" value="{{ $item->getTranslation('label', 'es', false) }}" placeholder="Título" @required($defaultLocale === 'es') class="rounded-lg border-slate-300 text-sm w-full focus:border-indigo-500 focus:ring-indigo-500"></x-slot:es>
                         </x-i18n-tabs>
 
                         <div class="flex flex-wrap items-center gap-3">
@@ -96,6 +98,8 @@
                 <x-slot:ka><input type="text" name="label[ka]" placeholder="სახელი" @required($defaultLocale === 'ka') class="rounded-lg border-slate-300 text-sm w-full focus:border-indigo-500 focus:ring-indigo-500"></x-slot:ka>
                 <x-slot:en><input type="text" name="label[en]" placeholder="Label" @required($defaultLocale === 'en') class="rounded-lg border-slate-300 text-sm w-full focus:border-indigo-500 focus:ring-indigo-500"></x-slot:en>
                 <x-slot:de><input type="text" name="label[de]" placeholder="Titel" @required($defaultLocale === 'de') class="rounded-lg border-slate-300 text-sm w-full focus:border-indigo-500 focus:ring-indigo-500"></x-slot:de>
+                <x-slot:pl><input type="text" name="label[pl]" placeholder="Tytuł" @required($defaultLocale === 'pl') class="rounded-lg border-slate-300 text-sm w-full focus:border-indigo-500 focus:ring-indigo-500"></x-slot:pl>
+                <x-slot:es><input type="text" name="label[es]" placeholder="Título" @required($defaultLocale === 'es') class="rounded-lg border-slate-300 text-sm w-full focus:border-indigo-500 focus:ring-indigo-500"></x-slot:es>
             </x-i18n-tabs>
 
             <div class="flex flex-wrap items-center gap-3">

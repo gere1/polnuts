@@ -182,10 +182,19 @@ class Row extends Model
             $style[] = 'background-color:' . $s['group_background_color'];
         }
 
+        if (! empty($s['group_text_color'])) {
+            $style[] = 'color:' . $s['group_text_color'];
+        }
+
         $style[] = 'padding-top:' . (int) ($s['group_padding_top'] ?? 48) . 'px';
         $style[] = 'padding-bottom:' . (int) ($s['group_padding_bottom'] ?? 48) . 'px';
 
         return implode(';', $style);
+    }
+
+    public function groupTextColor(): ?string
+    {
+        return $this->settings['group_text_color'] ?? null;
     }
 
     public function textSide(): string
@@ -206,6 +215,13 @@ class Row extends Model
     public function mapZoom(): int
     {
         return (int) ($this->settings['zoom'] ?? 15);
+    }
+
+    public function textColorStyle(): string
+    {
+        $s = $this->settings ?? [];
+
+        return empty($s['text_color']) ? '' : 'color:' . $s['text_color'];
     }
 
     public function styleAttr(): string

@@ -12,7 +12,7 @@
 @endphp
 @php $bare = $bare ?? false; @endphp
 @if ($products->count())
-    <section class="{{ $bare ? '' : 'px-4' }}" style="{{ $bare ? '' : $row->styleAttr() }}">
+    <section class="{{ $bare ? '' : 'px-4' }}" style="{{ $bare ? (($groupTextColor ?? null) ? 'color:'.$groupTextColor : $row->textColorStyle()) : $row->styleAttr() }}">
         <div class="{{ $bare ? '' : 'max-w-7xl mx-auto' }}">
             <x-animated-heading :row="$row" class="font-display italic text-3xl md:text-4xl text-center mb-2" />
             @if ($row->subtitle)
@@ -95,7 +95,11 @@
             @elseif ($row->cardStyle() === 'flip')
                 <div class="grid grid-cols-1 sm:grid-cols-2 {{ $gridCols }} gap-6 mt-6">
                     @foreach ($products as $product)
-                        @php $summary = productSummary($product, 200); @endphp
+                        @php
+                            $fullText = $product->excerpt
+                                ? nl2br(e($product->excerpt))
+                                : (str_contains($product->body ?? '', '<') ? $product->body : nl2br(e($product->body ?? '')));
+                        @endphp
                         <a href="{{ localizedRoute('products.show', $product) }}" class="product-flip-card block" style="height: {{ $row->productImageHeight() + 96 }}px">
                             <div class="product-flip-card-inner">
                                 <div class="product-flip-card-front">
@@ -108,8 +112,8 @@
                                 </div>
                                 <div class="product-flip-card-back">
                                     <h3 class="font-semibold text-lg mb-2 text-gray-900">{{ $product->name }}</h3>
-                                    @if ($summary)
-                                        <p class="text-sm text-gray-600">{!! nl2br(e($summary)) !!}</p>
+                                    @if (trim(strip_tags($fullText)))
+                                        <div class="product-flip-card-back-body prose prose-sm max-w-none text-gray-600">{!! $fullText !!}</div>
                                     @endif
                                     @if (! is_null($product->price))
                                         <div class="text-indigo-600 font-semibold mt-2">{{ number_format((float) $product->price, 2) }} ₾</div>

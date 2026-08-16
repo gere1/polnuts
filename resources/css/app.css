@@ -227,5 +227,11 @@
     justify-content: center;
     padding: 1.25rem;
     background: #fff;
-    text-align: center;
+}
+.product-flip-card-back h3,
+.product-flip-card-back > div:last-child {
+    flex-shrink: 0;
+}
+.product-flip-card-back-body {
+    overflow-y: auto;
 }

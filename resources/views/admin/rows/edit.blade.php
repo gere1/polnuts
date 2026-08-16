@@ -39,6 +39,8 @@
                     <x-slot:ka><x-text-input name="title[ka]" class="mt-1 block w-full" value="{{ old('title.ka', $row->getTranslation('title', 'ka', false)) }}" /></x-slot:ka>
                     <x-slot:en><x-text-input name="title[en]" class="mt-1 block w-full" value="{{ old('title.en', $row->getTranslation('title', 'en', false)) }}" /></x-slot:en>
                     <x-slot:de><x-text-input name="title[de]" class="mt-1 block w-full" value="{{ old('title.de', $row->getTranslation('title', 'de', false)) }}" /></x-slot:de>
+                    <x-slot:pl><x-text-input name="title[pl]" class="mt-1 block w-full" value="{{ old('title.pl', $row->getTranslation('title', 'pl', false)) }}" /></x-slot:pl>
+                    <x-slot:es><x-text-input name="title[es]" class="mt-1 block w-full" value="{{ old('title.es', $row->getTranslation('title', 'es', false)) }}" /></x-slot:es>
                 </x-i18n-tabs>
             </div>
             <div>
@@ -47,6 +49,8 @@
                     <x-slot:ka><x-text-input name="subtitle[ka]" class="mt-1 block w-full" value="{{ old('subtitle.ka', $row->getTranslation('subtitle', 'ka', false)) }}" /></x-slot:ka>
                     <x-slot:en><x-text-input name="subtitle[en]" class="mt-1 block w-full" value="{{ old('subtitle.en', $row->getTranslation('subtitle', 'en', false)) }}" /></x-slot:en>
                     <x-slot:de><x-text-input name="subtitle[de]" class="mt-1 block w-full" value="{{ old('subtitle.de', $row->getTranslation('subtitle', 'de', false)) }}" /></x-slot:de>
+                    <x-slot:pl><x-text-input name="subtitle[pl]" class="mt-1 block w-full" value="{{ old('subtitle.pl', $row->getTranslation('subtitle', 'pl', false)) }}" /></x-slot:pl>
+                    <x-slot:es><x-text-input name="subtitle[es]" class="mt-1 block w-full" value="{{ old('subtitle.es', $row->getTranslation('subtitle', 'es', false)) }}" /></x-slot:es>
                 </x-i18n-tabs>
             </div>
 
@@ -125,6 +129,8 @@
                         <x-slot:ka><x-rich-editor name="body[ka]" :value="old('body.ka', $row->getTranslation('body', 'ka', false))" /></x-slot:ka>
                         <x-slot:en><x-rich-editor name="body[en]" :value="old('body.en', $row->getTranslation('body', 'en', false))" /></x-slot:en>
                         <x-slot:de><x-rich-editor name="body[de]" :value="old('body.de', $row->getTranslation('body', 'de', false))" /></x-slot:de>
+                        <x-slot:pl><x-rich-editor name="body[pl]" :value="old('body.pl', $row->getTranslation('body', 'pl', false))" /></x-slot:pl>
+                        <x-slot:es><x-rich-editor name="body[es]" :value="old('body.es', $row->getTranslation('body', 'es', false))" /></x-slot:es>
                     </x-i18n-tabs>
                 </div>
             @endif
@@ -271,10 +277,14 @@
                             <p class="text-xs text-slate-500 -mt-2">ჩართვისას ქვემოთ არჩეული ფონი გავრცელდება მთელ ჯგუფზე ერთად — თითოეულ სვეტს საკუთარი ფონის ნაცვლად (ეს ცალკე, დამოუკიდებელი პარამეტრია, არ არის დაკავშირებული ამ სექციის ჩვეულებრივ ფონთან). გამორთვისას თითოეული სექცია საკუთარ ფონს (ან საერთო სქროლ-გრადიენტს) ინარჩუნებს.</p>
 
                             <div x-show="sharedBg" x-cloak class="space-y-3 border-l-2 border-slate-100 pl-4">
-                                <div class="grid grid-cols-3 gap-4">
+                                <div class="grid grid-cols-4 gap-4">
                                     <div>
                                         <x-input-label for="group_background_color" value="ჯგუფის ფონის ფერი" />
                                         <input type="color" id="group_background_color" name="group_background_color" value="{{ old('group_background_color', $s['group_background_color'] ?? '#ffffff') }}" class="mt-1 h-10 w-20 rounded-lg border-slate-300">
+                                    </div>
+                                    <div>
+                                        <x-input-label for="group_text_color" value="ჯგუფის ტექსტის ფერი" />
+                                        <input type="color" id="group_text_color" name="group_text_color" value="{{ old('group_text_color', $s['group_text_color'] ?? $s['text_color'] ?? '#111827') }}" class="mt-1 h-10 w-20 rounded-lg border-slate-300">
                                     </div>
                                     <div>
                                         <x-input-label for="group_padding_top" value="ზედა სივრცე (px)" />
@@ -598,6 +608,32 @@
                                                 @endif
                                             </div>
                                         </x-slot:de>
+                                        <x-slot:pl>
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                                <input type="text" name="title[pl]" value="{{ $item->getTranslation('title', 'pl', false) }}" placeholder="{{ $row->type === 'image' ? 'Podpis / tekst alt' : 'Tytuł' }}" class="{{ $inputCls }}">
+                                                @if ($row->type !== 'image')
+                                                    <input type="text" name="subtitle[pl]" value="{{ $item->getTranslation('subtitle', 'pl', false) }}" placeholder="Podtytuł" class="{{ $inputCls }}">
+                                                @endif
+                                                @if ($row->type === 'text')
+                                                    <div class="md:col-span-2">
+                                                        <x-rich-editor name="body[pl]" :id="'item-' . $item->id . '-body-pl'" :value="$item->getTranslation('body', 'pl', false)" height="140px" />
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </x-slot:pl>
+                                        <x-slot:es>
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                                <input type="text" name="title[es]" value="{{ $item->getTranslation('title', 'es', false) }}" placeholder="{{ $row->type === 'image' ? 'Título / texto alt' : 'Título' }}" class="{{ $inputCls }}">
+                                                @if ($row->type !== 'image')
+                                                    <input type="text" name="subtitle[es]" value="{{ $item->getTranslation('subtitle', 'es', false) }}" placeholder="Subtítulo" class="{{ $inputCls }}">
+                                                @endif
+                                                @if ($row->type === 'text')
+                                                    <div class="md:col-span-2">
+                                                        <x-rich-editor name="body[es]" :id="'item-' . $item->id . '-body-es'" :value="$item->getTranslation('body', 'es', false)" height="140px" />
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </x-slot:es>
                                     </x-i18n-tabs>
                                 </div>
                                 <input type="text" name="link" value="{{ $item->link }}" placeholder="ბმული (არასავალდებულო)" class="{{ $inputCls }}">
@@ -659,6 +695,32 @@
                                     @endif
                                 </div>
                             </x-slot:de>
+                            <x-slot:pl>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    <input type="text" name="title[pl]" placeholder="{{ $row->type === 'image' ? 'Podpis / tekst alt' : 'Tytuł' }}" class="{{ $inputCls }}">
+                                    @if ($row->type !== 'image')
+                                        <input type="text" name="subtitle[pl]" placeholder="Podtytuł" class="{{ $inputCls }}">
+                                    @endif
+                                    @if ($row->type === 'text')
+                                        <div class="md:col-span-2">
+                                            <x-rich-editor name="body[pl]" id="new-item-body-pl" height="140px" />
+                                        </div>
+                                    @endif
+                                </div>
+                            </x-slot:pl>
+                            <x-slot:es>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    <input type="text" name="title[es]" placeholder="{{ $row->type === 'image' ? 'Título / texto alt' : 'Título' }}" class="{{ $inputCls }}">
+                                    @if ($row->type !== 'image')
+                                        <input type="text" name="subtitle[es]" placeholder="Subtítulo" class="{{ $inputCls }}">
+                                    @endif
+                                    @if ($row->type === 'text')
+                                        <div class="md:col-span-2">
+                                            <x-rich-editor name="body[es]" id="new-item-body-es" height="140px" />
+                                        </div>
+                                    @endif
+                                </div>
+                            </x-slot:es>
                         </x-i18n-tabs>
                     </div>
                     <input type="text" name="link" placeholder="ბმული (არასავალდებულო)" class="{{ $inputCls }}">
