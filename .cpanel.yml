@@ -1,16 +1,16 @@
 ---
 deployment:
   tasks:
-    - test -f /home/polnutsp/app_live/composer.phar || (curl -fsSL https://getcomposer.org/installer -o /home/polnutsp/app_live/composer-setup.php && php /home/polnutsp/app_live/composer-setup.php --quiet --install-dir=/home/polnutsp/app_live && rm -f /home/polnutsp/app_live/composer-setup.php)
-    - cd /home/polnutsp/app_live && php composer.phar install --no-dev --optimize-autoloader --no-interaction
+    - test -f /home/polnutsp/app_live2/composer.phar || (curl -fsSL https://getcomposer.org/installer -o /home/polnutsp/app_live2/composer-setup.php && php -d allow_url_fopen=On /home/polnutsp/app_live2/composer-setup.php --quiet --install-dir=/home/polnutsp/app_live2 && rm -f /home/polnutsp/app_live2/composer-setup.php)
+    - cd /home/polnutsp/app_live2 && php -d allow_url_fopen=On composer.phar install --no-dev --optimize-autoloader --no-interaction
     - test -f /home/polnutsp/.db_imported || (mysql polnutsp_site < /home/polnutsp/polnuts_dump.sql && touch /home/polnutsp/.db_imported)
-    - chmod -R 775 /home/polnutsp/app_live/storage /home/polnutsp/app_live/bootstrap/cache
-    - php /home/polnutsp/app_live/artisan config:clear
-    - php /home/polnutsp/app_live/artisan config:cache
-    - php /home/polnutsp/app_live/artisan route:cache
-    - php /home/polnutsp/app_live/artisan view:cache
+    - chmod -R 775 /home/polnutsp/app_live2/storage /home/polnutsp/app_live2/bootstrap/cache
+    - php /home/polnutsp/app_live2/artisan config:clear
+    - php /home/polnutsp/app_live2/artisan config:cache
+    - php /home/polnutsp/app_live2/artisan route:cache
+    - php /home/polnutsp/app_live2/artisan view:cache
     - mkdir -p /home/polnutsp/public_html
-    - cp -f /home/polnutsp/app_live/public/favicon.ico /home/polnutsp/public_html/favicon.ico
-    - ln -sfn /home/polnutsp/app_live/public/build /home/polnutsp/public_html/build
-    - ln -sfn /home/polnutsp/app_live/storage/app/public /home/polnutsp/public_html/storage
-    - grep -q "RewriteEngine On" /home/polnutsp/public_html/.htaccess 2>/dev/null || cat /home/polnutsp/app_live/public/.htaccess >> /home/polnutsp/public_html/.htaccess
+    - cp -f /home/polnutsp/app_live2/public/favicon.ico /home/polnutsp/public_html/favicon.ico
+    - ln -sfn /home/polnutsp/app_live2/public/build /home/polnutsp/public_html/build
+    - ln -sfn /home/polnutsp/app_live2/storage/app/public /home/polnutsp/public_html/storage
+    - grep -q "RewriteEngine On" /home/polnutsp/public_html/.htaccess 2>/dev/null || cat /home/polnutsp/app_live2/public/.htaccess >> /home/polnutsp/public_html/.htaccess
