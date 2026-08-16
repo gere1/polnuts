@@ -4,6 +4,22 @@
 
 ---
 
+## 2026-08-16 — Polnuts-ის პირველი production deploy (polnuts.pl)
+
+პროექტი პირველად აიტვირთა production-ზე, ახალ დომენზე `polnuts.pl` (cPanel ანგარიში `polnutsp`, ჰოსტინგი proservice.ge). GitHub-ზე შეიქმნა ახალი public repo (`gere1/polnuts`) — public განზრახ, საიდუმლოებების გარეშე, რომ cPanel-ს HTTPS-ით შეძლებოდა clone SSH deploy key-ის გარეშე.
+
+ამ ანგარიშს **არც SSH და არც cPanel Terminal არ აქვს** (brnuts-ისგან განსხვავებით, სადაც მინიმუმ web Terminal იყო) — მთელი დეპლოი UAPI-ზე პირდაპირ HTTP მოთხოვნებით და cPanel-ის Git Version Control ფუნქციის `.cpanel.yml` დეპლოი-ტასქებით შესრულდა (ეს გახდა ერთადერთი საშუალება სერვერზე shell ბრძანებების გასაშვებად). გზაში აღმოჩნდა და გადაიჭრა რამდენიმე სერვერ-სპეციფიკური პრობლემა:
+- deploy-task-ების გარემო ცვლადებს ერთმანეთში არ იზიარებს (თითოეული task ცალკე shell-შია) — ყველგან absolute path გამოიყენება ცვლადების ნაცვლად.
+- CLI-ის ნაგულისხმევი `php` არის 8.2, თუმცა Laravel 13-ს 8.3+ სჭირდება — გამოიყენება `/opt/cpanel/ea-php83/root/usr/bin/php` ცალსახად ყველა deploy ბრძანებაში.
+- ვებ-გვერდის PHP ვერსიაც ცალკე იყო 8.2-ზე დაყენებული (500 შეცდომას იძლეოდა) — გასწორდა `LangPHP::php_set_vhost_versions` UAPI-ით (`ea-php83`).
+- ამ ჰოსტის LiteSpeed-ი **არ მისდევს public_html-ის გარეთ მიმართულ symlink-ებს** სტატიკური ფაილებისთვის — brnuts-ის დოკუმენტირებული symlink-პატერნი (`public_html/storage` → `app/storage/app/public`) აქ არ მუშაობდა (404 Laravel-ის მხრიდან). გამოსავალი: `config/filesystems.php`-ის `public` disk-ის `root` გახდა `PUBLIC_STORAGE_ROOT` env-ით override-adable, production-ში კი პირდაპირ `/home/polnutsp/public_html/storage`-ზეა მიმართული — ანუ admin-ის ატვირთვები პირდაპირ იწერება საჯაროდ ხელმისაწვდომ დირექტორიაში, symlink საერთოდ აღარ სჭირდება. `public/build` (Vite-ის ასეტები) კი უბრალოდ დეპლოის დროს კოპირდება (არა symlink), რადგან იცვლება მხოლოდ დეპლოისას.
+
+სრული სერვერის სტრუქტურა, ყველა UAPI გოჩა (path mangling, JSON-encoded პარამეტრები, `deployable` flag-ის ერთჯერადი ქცევა და ა.შ.) და მიმდინარე დეპლოის პროცედურა დეტალურადაა შენახული პროექტის მეხსიერებაში (`deploy-polnuts-server`).
+
+**შეცვლილი:** `config/filesystems.php`, `.cpanel.yml` (ახალი), `docs/WORKLOG.md`.
+
+---
+
 ## 2026-07-15 — Quill (`<x-rich-editor>`) აღარ იტვირთებოდა row-item-ების ენების ტაბებში — გასწორდა
 
 წინა ორი ჩანაწერით დამატებული pl/es ველების ტესტირებისას აღმოჩნდა, რომ row-item-ის (სლაიდი/ბლოკი) ტექსტის რედაქტორი (Quill) საერთოდ არ იტვირთებოდა, როცა ის `<x-i18n-tabs>`-ის named slot-ში (`<x-slot:ka>` და ა.შ.) იყო ჩალაგებული — გვერდზე ჩნდებოდა დაუსტილო, ერთმანეთზე გადაფარებული უბრალო ტექსტი Quill toolbar-ის ნაცვლად ("ტექსტი ჩაწერის გრაფებია არეულია"). ბრაუზერის კონსოლში იყო "Quill is not defined".
