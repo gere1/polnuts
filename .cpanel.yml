@@ -1,4 +1,6 @@
 ---
 deployment:
   tasks:
-    - unzip -o -q /home/polnutsp/media.zip -d /home/polnutsp/app_live2/storage/app/public && rm -f /home/polnutsp/media.zip
+    - rm -rf /home/polnutsp/public_html/build /home/polnutsp/public_html/storage
+    - cp -r /home/polnutsp/app_live2/public/build /home/polnutsp/public_html/build
+    - cp -r /home/polnutsp/app_live2/storage/app/public /home/polnutsp/public_html/storage
