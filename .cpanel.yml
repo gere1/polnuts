@@ -1,17 +1,16 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/polnutsp/polnuts-app
-    - test -f $DEPLOYPATH/composer.phar || (cd $DEPLOYPATH && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && php composer-setup.php --quiet && rm -f composer-setup.php)
-    - cd $DEPLOYPATH && php composer.phar install --no-dev --optimize-autoloader --no-interaction
+    - test -f /home/polnutsp/polnuts-app/composer.phar || (cd /home/polnutsp/polnuts-app && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && php composer-setup.php --quiet && rm -f composer-setup.php)
+    - cd /home/polnutsp/polnuts-app && php composer.phar install --no-dev --optimize-autoloader --no-interaction
     - test -f /home/polnutsp/.db_imported || (mysql polnutsp_site < /home/polnutsp/polnuts_dump.sql && touch /home/polnutsp/.db_imported)
-    - chmod -R 775 $DEPLOYPATH/storage $DEPLOYPATH/bootstrap/cache
-    - php $DEPLOYPATH/artisan config:clear
-    - php $DEPLOYPATH/artisan config:cache
-    - php $DEPLOYPATH/artisan route:cache
-    - php $DEPLOYPATH/artisan view:cache
+    - chmod -R 775 /home/polnutsp/polnuts-app/storage /home/polnutsp/polnuts-app/bootstrap/cache
+    - php /home/polnutsp/polnuts-app/artisan config:clear
+    - php /home/polnutsp/polnuts-app/artisan config:cache
+    - php /home/polnutsp/polnuts-app/artisan route:cache
+    - php /home/polnutsp/polnuts-app/artisan view:cache
     - mkdir -p /home/polnutsp/public_html
-    - cp -f $DEPLOYPATH/public/favicon.ico /home/polnutsp/public_html/favicon.ico
-    - ln -sfn $DEPLOYPATH/public/build /home/polnutsp/public_html/build
-    - ln -sfn $DEPLOYPATH/storage/app/public /home/polnutsp/public_html/storage
-    - grep -q "RewriteEngine On" /home/polnutsp/public_html/.htaccess 2>/dev/null || cat $DEPLOYPATH/public/.htaccess >> /home/polnutsp/public_html/.htaccess
+    - cp -f /home/polnutsp/polnuts-app/public/favicon.ico /home/polnutsp/public_html/favicon.ico
+    - ln -sfn /home/polnutsp/polnuts-app/public/build /home/polnutsp/public_html/build
+    - ln -sfn /home/polnutsp/polnuts-app/storage/app/public /home/polnutsp/public_html/storage
+    - grep -q "RewriteEngine On" /home/polnutsp/public_html/.htaccess 2>/dev/null || cat /home/polnutsp/polnuts-app/public/.htaccess >> /home/polnutsp/public_html/.htaccess
