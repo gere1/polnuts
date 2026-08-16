@@ -1,18 +1,6 @@
 ---
 deployment:
   tasks:
-    - git -C /home/polnutsp/app_live2 pull origin main
-    - test -f /home/polnutsp/app_live2/composer.phar || (curl -fsSL https://getcomposer.org/installer -o /home/polnutsp/app_live2/composer-setup.php && /opt/cpanel/ea-php83/root/usr/bin/php -d allow_url_fopen=On /home/polnutsp/app_live2/composer-setup.php --quiet --install-dir=/home/polnutsp/app_live2 && rm -f /home/polnutsp/app_live2/composer-setup.php)
-    - cd /home/polnutsp/app_live2 && /opt/cpanel/ea-php83/root/usr/bin/php -d allow_url_fopen=On composer.phar install --no-dev --optimize-autoloader --no-interaction
-    - test -f /home/polnutsp/.db_imported || (mysql polnutsp_site < /home/polnutsp/polnuts_dump.sql && touch /home/polnutsp/.db_imported)
-    - chmod -R 775 /home/polnutsp/app_live2/storage /home/polnutsp/app_live2/bootstrap/cache
-    - chmod -R 775 /home/polnutsp/public_html/storage
-    - /opt/cpanel/ea-php83/root/usr/bin/php /home/polnutsp/app_live2/artisan config:clear
-    - /opt/cpanel/ea-php83/root/usr/bin/php /home/polnutsp/app_live2/artisan config:cache
-    - /opt/cpanel/ea-php83/root/usr/bin/php /home/polnutsp/app_live2/artisan route:cache
-    - /opt/cpanel/ea-php83/root/usr/bin/php /home/polnutsp/app_live2/artisan view:cache
-    - mkdir -p /home/polnutsp/public_html
-    - cp -f /home/polnutsp/app_live2/public/favicon.ico /home/polnutsp/public_html/favicon.ico
-    - rm -rf /home/polnutsp/public_html/build
-    - cp -r /home/polnutsp/app_live2/public/build /home/polnutsp/public_html/build
-    - grep -q "RewriteEngine On" /home/polnutsp/public_html/.htaccess 2>/dev/null || cat /home/polnutsp/app_live2/public/.htaccess >> /home/polnutsp/public_html/.htaccess
+    - /opt/cpanel/ea-php83/root/usr/bin/php /home/polnutsp/app_live2/artisan tinker --execute="echo 'setting.email=' . (\App\Models\Setting::current()->email ?? 'NULL');"
+    - which sendmail
+    - tail -n 60 /home/polnutsp/app_live2/storage/logs/laravel.log
